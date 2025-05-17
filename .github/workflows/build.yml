@@ -19,9 +19,9 @@ jobs:
               os: windows-latest,
               cc: "cl",
               cxx: "cl",
-              environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
-            }
-      steps:
+              environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"            }
+
+    steps:
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
