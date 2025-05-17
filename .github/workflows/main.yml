@@ -1,0 +1,65 @@
+name: Build PCE
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        config:
+          - {
+              name: "Windows MSVC",
+              os: windows-latest,
+              cc: "cl",
+              cxx: "cl",
+              environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"            }
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Set up Visual Studio shell
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          arch: 'win64_msvc2019_64'
+
+      - name: Configure CMake
+        shell: pwsh
+        run: |
+          cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${{env.Qt5_DIR}}
+
+      - name: Build
+        shell: pwsh
+        run: cmake --build ${{github.workspace}}/build --config Release --parallel
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        shell: pwsh
+        run: ctest -C Release --output-on-failure
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path artifacts -Force
+          Copy-Item -Path "build\bin\*.exe" -Destination artifacts
+          Copy-Item -Path "build\bin\*.dll" -Destination artifacts
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: pce-${{ runner.os }}
+          path: artifacts/
