@@ -10,6 +10,7 @@
 #include "pce/system.h"
 Log_SetChannel(HW::BochsVGA);
 
+
 namespace HW {
 DEFINE_OBJECT_TYPE_INFO(BochsVGA);
 DEFINE_GENERIC_COMPONENT_FACTORY(BochsVGA);
