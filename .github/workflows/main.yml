@@ -22,7 +22,7 @@ jobs:
               environment_script: "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Auxiliary/Build/vcvars64.bat"            }
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
 
@@ -59,7 +59,7 @@ jobs:
           Copy-Item -Path "build\bin\*.dll" -Destination artifacts
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pce-${{ runner.os }}
           path: artifacts/
