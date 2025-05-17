@@ -41,7 +41,7 @@ jobs:
       - name: Configure CMake
         shell: pwsh
         run: |
-          cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${{env.Qt5_DIR}}
+          cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${{env.Qt5_DIR}} -DENABLE_QT_FRONTEND=ON
 
       - name: Build
         shell: pwsh
