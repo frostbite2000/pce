@@ -17,3 +17,10 @@ target_include_directories(libsamplerate PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/in
 target_include_directories(libsamplerate INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set_target_properties(libsamplerate PROPERTIES LINKER_LANGUAGE C)
 
+if(MSVC)
+    target_compile_definitions(libsamplerate PRIVATE 
+        HAVE_LRINT
+        HAVE_LRINTF
+    )
+endif()
+
